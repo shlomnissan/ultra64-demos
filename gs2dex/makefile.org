@@ -1,0 +1,47 @@
+LIB = $(ROOT)/usr/lib
+LPR = $(LIB)/PR
+INC = $(ROOT)/usr/include
+CC  = gcc
+LD  = ld
+MAKEROM = mild
+
+.c.o:
+	$(CC) -g -G 0 -c -I. -I$(INC)/PR -I$(INC) -D_MIPS_SZLONG=32 -D_MIPS_SZINT=32 $<
+
+APP =		sample.out
+
+TARGETS =	sample.n64
+
+CODEFILES =	system.c main.c uc_assert.c action.c sprite.c
+CODEOBJECTS =	$(CODEFILES:.c=.o)
+CODESEGMENT =	codesegment.o
+
+STATICFILES =	static.c texture.c sprite_ball.c
+STATICOBJECTS =	$(STATICFILES:.c=.o)
+STATICSEGMENT =	staticsegment.o
+
+BGFILES =	l2_tv.c
+BGOBJECTS =	$(BGFILES:.c=.o)
+
+DATAFILES =	system_cfb.c system_rspbuf.c
+DATAOBJECTS =	$(DATAFILES:.c=.o)
+
+OBJECTS =	$(CODESEGMENT) $(STATICSEGMENT) $(DATAOBJECTS) $(BGOBJECTS)
+
+MAPFILE =	load.map
+
+LDFLAGS =	$(MKDEPOPT) -L$(LIB) -lgultra_d -L$(GCCDIR)/mipse/lib -lkmc
+
+LCDEFS  =	-DDEBUG -DF3DEX_GBI -DRSP_DEBUG
+
+default:	$(TARGETS)
+
+$(CODESEGMENT):	$(CODEOBJECTS)
+		$(LD) -o $(CODESEGMENT) -r $(CODEOBJECTS) $(LDFLAGS)
+
+$(STATICSEGMENT): $(STATICOBJECTS)
+		$(LD) -o $(STATICSEGMENT) -r $(STATICOBJECTS) $(LDFLAGS)
+
+$(TARGETS):	spec $(OBJECTS)
+		$(MAKEROM) $(LCDEFS) -m -r $(TARGETS) spec > $(MAPFILE)
+

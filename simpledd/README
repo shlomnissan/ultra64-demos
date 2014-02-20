@@ -1,0 +1,48 @@
+Tue Oct 21 17:13:16 PDT 1997
+
+Mark A. DeLoura
+Product Support Group
+Nintendo of America Inc.
+
+Portable Programming for N64 Cartridge and Disk Drive
+		Example Program
+
+This directory contains a modified version of the simple demo which
+uses more N64 features than the standard version.
+
+It is designed to go along with the Nintendo64 Portable Programming
+document, to illustrate how a program can be designed to operate 
+in both cartridge and disk formats.  This program will be compiled
+in three different ways when 'make' is executed:
+	simple_d   -- Cartridge debug image
+	simple_rom -- Cartridge ROM image
+	simple_dd  -- Disk Drive debug image
+
+To compile a specific version, execute in the following manner:
+	Partner-NW: make SUBDIRS=*
+	Partner-PC: make -f makefile.pc SUBDIRS=*
+where * is a list of the images you'd like to compile.  All ROM images 
+will be compiled into their respective subdirectories.
+
+This program utilizes the N64 graphics, audio, and controller.  The
+cartridge version uses the EEPROM (if it exists), and the Disk Drive
+version uses the Disk Drive and Disk Drive ROM.
+
+Functionality of the program-- it's the simple demo, plus read/write
+capability.  
+	Press the Z trigger to bring up a menu.  
+	Use the camera up/down to move in the menu.
+	Press A to select an option.
+	Press the Z trigger to make the menu go away.
+
+In Cartridge mode, all reads and writes are made to the EEPROM.
+In DD mode, all reads and writes are made to the disk.
+
+*** Please note that not all Disk Drive error conditions are currently
+	checked for.  Just because I haven't done it doesn't mean you
+	don't have to!  Check your Nintendo64 Disk Drive Programming
+	Manual for proper procedures.
+
+If you have any questions, please contact the Product Support Group
+at 425-861-2715 or support@noa.com.
+

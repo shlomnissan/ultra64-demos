@@ -1,0 +1,36 @@
+	org     $b0000000
+
+;**************************************************************
+header  group
+	section.16      code.header,header
+
+;**************************************************************
+code                    group obj($80000400)
+codebss                 group obj(),bss
+
+_codeSegmentRomStart    alias _code_org
+_codeSegmentRomEnd      alias _code_orgend
+_codeSegmentStart       alias _code_obj
+_codeSegmentEnd         alias _codebss_objend
+
+	section.16      code.start,code
+	section.16      code.rdata,code
+	section.16      code.rodata,code
+        section.4       code.ctors,code
+        section.4       code.dtors,code
+	section.16      code.text,code
+	section.16      code.data,code
+	section.16      code.sdata,code
+	section.16      code.sbss,codebss
+	section.16      code.bss,codebss
+
+	include "c:/sn_win/lib/snmain.obj",code
+	include "c:/sn_win/lib/psyq.obj",code
+	include "c:/sn_win/lib/psyqdbg.obj",code
+
+        include "fault.obj",code
+        include "printfault.obj",code
+
+	inclib  "libsn.lib",code
+        inclib  "libgultra.lib",code
+

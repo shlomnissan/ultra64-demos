@@ -1,0 +1,12 @@
+cd simple_d
+rm -f Makedepend
+ln -s /dev/null Makedepend
+cd ..
+cd simple_rom
+rm -f Makedepend    
+ln -s /dev/null Makedepend
+cd ..
+cd simple_dd
+rm -f Makedepend    
+ln -s /dev/null Makedepend
+cd ..

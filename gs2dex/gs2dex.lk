@@ -1,0 +1,137 @@
+	org     $b0000000
+
+;**************************************************************
+header  group
+	section.16      code.header,header
+
+;**************************************************************
+code                    group obj($80000400)
+codebss                 group obj(),bss
+
+_codeSegmentRomStart    alias _code_org
+_codeSegmentRomEnd      alias _code_orgend
+_codeSegmentStart       alias _code_obj
+_codeSegmentEnd         alias _codebss_objend
+
+	section.16      code.start,code
+	section.16      code.rdata,code
+	section.16      code.rodata,code
+        section.4       code.ctors,code
+        section.4       code.dtors,code
+	section.16      code.text,code
+	section.16      code.data,code
+	section.16      code.sdata,code
+	section.16      code.sbss,codebss
+	section.16      code.bss,codebss
+
+	include "c:/sn_win/lib/snmain.obj",code
+	include "c:/sn_win/lib/psyq.obj",code
+	include "c:/sn_win/lib/psyqdbg.obj",code
+
+	include "system.obj",code
+	include "main.obj",code
+	include "uc_assert.obj",code
+	include "action.obj",code
+	include "sprite.obj",code
+
+        include "c:/ultra/usr/lib/pr/rspboot.obj",code
+        include "c:/ultra/usr/lib/pr/gspS2DEX.fifo.obj",code
+        include "c:/ultra/usr/lib/pr/gspS2DEX.fifo_d.obj",code
+
+	inclib  "libsn.lib",code
+        inclib  "libgultra.lib",code
+
+;**************************************************************
+_static                    group obj($01000000)
+_staticbss                 group obj(),bss
+
+_staticSegmentRomStart     alias __static_org
+_staticSegmentRomEnd       alias __static_orgend
+_staticSegmentStart        alias __static_obj
+_staticSegmentEnd          alias __staticbss_objend
+	
+	section.16      _static.rdata,_static
+	section.16      _static.rodata,_static
+	section.16      _static.ctors,_static
+	section.16      _static.dtors,_static
+	section.16      _static.text,_static
+	section.16      _static.data,_static
+	section.16      _static.sdata,_static
+	section.16      _static.sbss,_staticbss
+	section.16      _static.bss,_staticbss
+
+	include "static.obj",_static
+        include "texture.obj",_static
+        include "sprite_ball.obj",_static
+
+;**************************************************************
+_bg_rgba                   group   obj()
+_bg_rgbabss                group   obj(),bss
+_bg_rgbaSegmentRomStart    alias   __bg_rgba_org
+_bg_rgbaSegmentRomEnd      alias   __bg_rgba_orgend
+_bg_rgbaSegmentStart       alias   __bg_rgba_obj
+_bg_rgbaSegmentEnd         alias   __bg_rgbabss_objend
+	
+	section.16      _bg_rgba.data,_bg_rgba
+
+bg_rgbadata       incbin "L2_TV.rgba5551",_bg_rgba.data,16
+
+;**************************************************************
+_bg_ci                   group   obj()
+_bg_cibss                group   obj(),bss
+_bg_ciSegmentRomStart    alias   __bg_ci_org
+_bg_ciSegmentRomEnd      alias   __bg_ci_orgend
+_bg_ciSegmentStart       alias   __bg_ci_obj
+_bg_ciSegmentEnd         alias   __bg_cibss_objend
+	
+	section.16      _bg_ci.data,_bg_ci
+        section.16      _bg_ci.rdata,_bg_ci
+        section.16      _bg_ci.rodata,_bg_ci
+        section.16      _bg_ci.text,_bg_ci
+        section.16      _bg_ci.ctors,_bg_ci
+        section.16      _bg_ci.dtors,_bg_ci
+        section.16      _bg_ci.sdata,_bg_ci
+        section.16      _bg_ci.sbss,_bg_ci
+        section.16      _bg_ci.bss,_bg_ci
+
+        include "l2_tv.obj",_bg_ci
+
+;**************************************************************
+_cfb                    group obj($80300000)
+_cfbbss                 group obj(),bss
+
+_cfbSegmentRomStart     alias __cfb_org
+_cfbSegmentRomEnd       alias __cfb_orgend
+_cfbSegmentStart        alias __cfb_obj
+_cfbSegmentEnd          alias __cfbbss_objend
+	
+	section.16      _cfb.rdata,_cfb
+	section.16      _cfb.rodata,_cfb
+	section.16      _cfb.ctors,_cfb
+	section.16      _cfb.dtors,_cfb
+	section.16      _cfb.text,_cfb
+	section.16      _cfb.data,_cfb
+	section.16      _cfb.sdata,_cfb
+	section.16      _cfb.sbss,_cfbbss
+	section.16      _cfb.bss,_cfbbss
+	include "system_cfb.obj",_cfb
+
+;**************************************************************
+_rsp_cfb                    group obj($803a0000)
+_rsp_cfbbss                 group obj(),bss
+
+_rsp_cfbSegmentRomStart     alias __rsp_cfb_org
+_rsp_cfbSegmentRomEnd       alias __rsp_cfb_orgend
+_rsp_cfbSegmentStart        alias __rsp_cfb_obj
+_rsp_cfbSegmentEnd          alias __rsp_cfbbss_objend
+	
+	section.16      _rsp_cfb.rdata,_rsp_cfb
+	section.16      _rsp_cfb.rodata,_rsp_cfb
+	section.16      _rsp_cfb.ctors,_rsp_cfb
+	section.16      _rsp_cfb.dtors,_rsp_cfb
+	section.16      _rsp_cfb.text,_rsp_cfb
+	section.16      _rsp_cfb.data,_rsp_cfb
+	section.16      _rsp_cfb.sdata,_rsp_cfb
+	section.16      _rsp_cfb.sbss,_rsp_cfbbss
+	section.16      _rsp_cfb.bss,_rsp_cfbbss
+	include "system_rspbuf.obj",_rsp_cfb

@@ -1,0 +1,18 @@
+#define	STACKSIZE	0x2000
+
+/*
+ * ROM spec file
+ */
+beginseg
+	name "boot"
+	flags BOOT OBJECT
+	entry boot
+	stack bootStack + STACKSIZE
+	include "boot.o"
+endseg
+
+beginwave
+	name "game"
+	include "boot"
+endwave
+

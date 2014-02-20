@@ -1,0 +1,122 @@
+
+	org     $b0000000
+
+;***********************************************************
+header  group
+	section.16      code.header,header
+
+;***********************************************************
+code                    group obj($80200000)
+codebss                 group obj(),bss
+
+_codeSegmentRomStart    alias _code_org
+_codeSegmentRomEnd      alias _code_orgend
+_codeSegmentStart       alias _code_obj
+_codeSegmentEnd         alias _codebss_objend
+
+	section.16      code.start,code
+	section.16      code.rdata,code
+	section.16      code.rodata,code
+        section.4       code.ctors,code
+        section.4       code.dtors,code
+	section.16      code.text,code
+	section.16      code.data,code
+	section.16      code.sdata,code
+	section.16      code.sbss,codebss
+	section.16      code.bss,codebss
+
+	include "c:/sn_win/lib/snmain.obj",code
+	include "c:/sn_win/lib/psyq.obj",code
+	include "c:/sn_win/lib/psyqdbg.obj",code
+
+	include "morphfaces.obj",code
+	include "morph.obj",code
+	include "dram_stack.obj",code
+	include "data.obj",code
+	include "c:/ultra/usr/lib/pr/rspboot.obj",code
+        include "c:/ultra/usr/lib/pr/gspF3DEX2.xbus.obj",code
+
+	inclib  "libsn.lib",code
+        inclib  "libgultra.lib",code
+
+;***********************************************************
+_rsp_static                  group   obj($01000000)
+_rsp_staticbss               group   obj(),bss
+
+_rsp_staticSegmentRomStart  alias   __rsp_static_org
+_rsp_staticSegmentRomEnd    alias   __rsp_static_orgend
+_rsp_staticSegmentStart     alias   __rsp_static_obj
+_rsp_staticSegmentEnd       alias   __rsp_staticbss_objend
+
+	section.16      _rsp_static.rdata,_rsp_static
+	section.16      _rsp_static.rodata,_rsp_static
+	section.16      _rsp_static.ctors,_rsp_static
+	section.16      _rsp_static.dtors,_rsp_static
+	section.16      _rsp_static.text,_rsp_static
+	section.16      _rsp_static.data,_rsp_static
+	section.16      _rsp_static.sdata,_rsp_static
+	section.16      _rsp_static.sbss,_rsp_staticbss
+	section.16      _rsp_static.bss,_rsp_staticbss
+	include "static.obj",_rsp_static
+
+
+;***********************************************************
+_rsp_dynamic                group obj($02000000)
+_rsp_dynamicbss             group   obj(),bss
+
+rsp_dynamicSegmentRomStart alias   __rsp_dynamic_org
+rsp_dynamicSegmentRomEnd   alias   __rsp_dynamic_orgend
+rsp_dynamicSegmentStart    alias   __rsp_dynamic_obj
+rsp_dynamicSegmentEnd      alias   __rsp_dynamicbss_objend
+
+	section.16      _rsp_dynamic.rdata,_rsp_dynamic
+	section.16      _rsp_dynamic.rodata,_rsp_dynamic
+	section.16      _rsp_dynamic.ctors,_rsp_dynamic
+	section.16      _rsp_dynamic.dtors,_rsp_dynamic
+	section.16      _rsp_dynamic.text,_rsp_dynamic
+	section.16      _rsp_dynamic.data,_rsp_dynamic
+	section.16      _rsp_dynamic.sdata,_rsp_dynamic
+	section.16      _rsp_dynamic.sbss,_rsp_dynamicbss
+	section.16      _rsp_dynamic.bss,_rsp_dynamicbss
+	include "dynamic.obj",_rsp_dynamic
+
+;***********************************************************
+_cfb                    group obj($8006a000)
+_cfbbss                 group obj(),bss
+
+_cfbSegmentRomStart     alias __cfb_org
+_cfbSegmentRomEnd       alias __cfb_orgend
+_cfbSegmentStart        alias __cfb_obj
+_cfbSegmentEnd          alias __cfbbss_objend
+	
+	section.16      _cfb.rdata,_cfb
+	section.16      _cfb.rodata,_cfb
+	section.16      _cfb.ctors,_cfb
+	section.16      _cfb.dtors,_cfb
+	section.16      _cfb.text,_cfb
+	section.16      _cfb.data,_cfb
+	section.16      _cfb.sdata,_cfb
+	section.16      _cfb.sbss,_cfbbss
+	section.16      _cfb.bss,_cfbbss
+	include "cfb.obj",_cfb
+  
+;***********************************************************
+_zbuffer                group obj($80100000)
+_zbufferbss             group obj(),bss
+
+_zbufferSegmentRomStart alias __zbuffer_org
+_zbufferSegmentRomEnd   alias __zbuffer_orgend
+_zbufferSegmentStart    alias __zbuffer_obj
+_zbufferSegmentEnd      alias __zbufferbss_objend
+	
+	section.16      _zbuffer.rdata,_zbuffer
+	section.16      _zbuffer.rodata,_zbuffer
+	section.16      _zbuffer.ctors,_zbuffer
+	section.16      _zbuffer.dtors,_zbuffer
+	section.16      _zbuffer.text,_zbuffer
+	section.16      _zbuffer.data,_zbuffer
+	section.16      _zbuffer.sdata,_zbuffer
+	section.16      _zbuffer.sbss,_zbufferbss
+	section.16      _zbuffer.bss,_zbufferbss
+	include "zbuf.obj",_zbuffer
+  

@@ -1,0 +1,24 @@
+LCDEFS += -DDD64 -DNDEBUG 
+#LCDEFS += -DDD64 -D_FINALROM
+LCOPTS += -O2
+ULTRALIB = ultra_d
+#ULTRALIB = ultra_rom
+LDIRT += $(APP)
+CODEFILES += dd.c
+MAKEDISKDEFS = -DPARTNER_NW -DDD64 -t 0
+LDFLAGS += -lleo_d -l$(ULTRALIB)
+#LDFLAGS += -lleo -l$(ULTRALIB)
+
+TARGETS = disk
+
+loc_simple_dd: $(TARGETS)
+
+loc_clobber: loc_clean loc_rmtargets $(_FORCE)
+	rm -rf $(MKDEPFILE) gwrite rom
+
+loc_clean: $(_FORCE)
+	rm -rf $(DIRT)
+
+loc_rmtargets: $(_FORCE)
+	rm -rf $(TARGETS)
+

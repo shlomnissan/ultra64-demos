@@ -1,0 +1,80 @@
+	org     $b0000000
+
+;**************************************************************
+header  group
+	section.16      code.header,header
+
+;**************************************************************
+code                    group obj($80000400)
+codebss                 group obj(),bss
+
+_codeSegmentRomStart    alias _code_org
+_codeSegmentRomEnd      alias _code_orgend
+_codeSegmentStart       alias _code_obj
+_codeSegmentEnd         alias _codebss_objend
+
+	section.16      code.start,code
+	section.16      code.rdata,code
+	section.16      code.rodata,code
+        section.4       code.ctors,code
+        section.4       code.dtors,code
+	section.16      code.text,code
+	section.16      code.data,code
+	section.16      code.sdata,code
+	section.16      code.sbss,codebss
+	section.16      code.bss,codebss
+
+	include "c:/sn_win/lib/snmain.obj",code
+	include "c:/sn_win/lib/psyq.obj",code
+	include "c:/sn_win/lib/psyqdbg.obj",code
+
+	include "lines.obj",code
+	include "static.obj",code
+        include "dram_stack.obj",code
+	include "c:/ultra/usr/lib/pr/rspboot.obj",code
+        include "c:/ultra/usr/lib/pr/gspL3DEX2.xbus.obj",code
+        include "c:/ultra/usr/lib/pr/gspF3DEX2.xbus.obj",code
+
+	inclib  "libsn.lib",code
+        inclib  "libgultra.lib",code
+
+;**************************************************************
+_cfb                    group obj($8018f800)
+_cfbbss                 group obj(),bss
+
+_cfbSegmentRomStart     alias __cfb_org
+_cfbSegmentRomEnd       alias __cfb_orgend
+_cfbSegmentStart        alias __cfb_obj
+_cfbSegmentEnd          alias __cfbbss_objend
+	
+	section.16      _cfb.rdata,_cfb
+	section.16      _cfb.rodata,_cfb
+	section.16      _cfb.ctors,_cfb
+	section.16      _cfb.dtors,_cfb
+	section.16      _cfb.text,_cfb
+	section.16      _cfb.data,_cfb
+	section.16      _cfb.sdata,_cfb
+	section.16      _cfb.sbss,_cfbbss
+	section.16      _cfb.bss,_cfbbss
+	include "cfb.obj",_cfb
+
+;**************************************************************
+_zbuffer                group obj($803da800)
+_zbufferbss             group obj(),bss
+
+_zbufferSegmentRomStart alias __zbuffer_org
+_zbufferSegmentRomEnd   alias __zbuffer_orgend
+_zbufferSegmentStart    alias __zbuffer_obj
+_zbufferSegmentEnd      alias __zbufferbss_objend
+	
+	section.16      _zbuffer.rdata,_zbuffer
+	section.16      _zbuffer.rodata,_zbuffer
+	section.16      _zbuffer.ctors,_zbuffer
+	section.16      _zbuffer.dtors,_zbuffer
+	section.16      _zbuffer.text,_zbuffer
+	section.16      _zbuffer.data,_zbuffer
+	section.16      _zbuffer.sdata,_zbuffer
+	section.16      _zbuffer.sbss,_zbufferbss
+	section.16      _zbuffer.bss,_zbufferbss
+	include "zbuffer.obj",_zbuffer
+

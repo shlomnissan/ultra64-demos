@@ -1,0 +1,29 @@
+LCDEFS += -DNDEBUG -D_FINALROM
+LCOPTS += -O2
+ULTRALIB = gultra_rom
+LDIRT += $(APP)
+MAKEROMDEFS = -s 64
+EXTRACODEFILES = cart.c eeprom.c
+EXTRADATAFILES = font.c
+LDFLAGS += -l$(ULTRALIB)
+
+OBJECTS += $(EXTRADATAFILES:.c=.o) $(EXTRACODEFILES:.c=.o)
+CODEOBJECTS += $(EXTRACODEFILES:.c=.o)
+
+TARGETS = simple.n64
+
+.PHONY: clobber
+
+%.o : %.c
+	$(CC) $(LCOPTS) -c $(LCINCS) $(LCDEFS) $<
+
+all: $(TARGETS)
+
+$(CODESEGMENT):	$(CODEOBJECTS)
+		$(LD) -o $@ -r $^ $(LDFLAGS) 
+
+$(TARGETS):	spec $(OBJECTS)
+		$(MAKEROM) $(MAKEROMDEFS) ../spec -r $(TARGETS)
+
+clobber:
+	rm -rf *.o $(TARGETS) simple.out

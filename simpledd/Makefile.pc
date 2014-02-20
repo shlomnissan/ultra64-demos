@@ -1,0 +1,89 @@
+# export all variable definitions to submakes.
+export
+
+# Use this directory for the .c files
+VPATH = ..
+
+# Misc good stuff
+LIB = $(ROOT)/usr/lib
+LPR = $(LIB)/PR
+INC = $(ROOT)/usr/include
+CC  = gcc
+MAKEROM  = mild
+MAKEDISK = mild -DD64
+
+# to make the tags file do "make simpletags"
+# to make just the simple_d directory do "make SUBDIRS=simple_d"
+SUBDIRS=simple_d simple_dd simple_rom
+
+COMMONPREF = simple
+
+APP =		simple
+
+HFILES =		\
+	simple.h	\
+	audio.h		\
+	gfx.h		\
+	misc.h		\
+	gfx_tri.h	\
+	gfx_vtx.h
+
+CODEFILES =		\
+	audio.c		\
+	audiomgr.c	\
+	controller.c	\
+	gfx.c		\
+	gfxstack.c	\
+	gfxyield.c	\
+	misc.c		\
+	simple.c	\
+	sched.c		\
+	drawfont.c
+
+CODEOBJECTS =	$(CODEFILES:.c=.o) 
+CODESEGMENT =	codesegment.o
+
+# Data files that have their own segments:
+
+DATAFILES =		\
+	gfxdynamic.c	\
+	gfxdlists.c	\
+	gfxzbuffer.c	\
+	gfxinit.c	\
+	gfxstatic.c	\
+	gfxcfb.c	
+
+DATAOBJECTS =	$(DATAFILES:.c=.o) 
+
+OBJECTS =	$(CODESEGMENT) $(DATAOBJECTS) $(EXTRADATAOBJECTS)
+
+LCOPTS =	-O -G 0
+LCINCS =	-I. -I$(INC)/PR -I$(INC)
+LCDEFS =	-D_LANGUAGE_C -D_MIPS_SZLONG=32 -D_MIPS_SZINT=32 -DPARTNER_PC
+
+LDIRT  =	load.map
+
+LDFLAGS =	$(MKDEPOPT) -L$(LIB) -L$(GCCDIR)/mipse/lib -lkmc 
+
+.PHONY: simple_d simple_dd simple_rom clobber
+
+all:	$(SUBDIRS)
+
+simple_d: 
+	@echo Making simple_d...
+	$(MAKE) -C simple_d -f makefile.pc
+
+simple_dd: 
+	@echo Making simple_dd...
+	$(MAKE) -C simple_dd -f makefile.pc
+
+simple_rom: 
+	@echo Making simple_rom...
+	$(MAKE) -C simple_rom -f makefile.pc
+
+
+clobber:
+	$(MAKE) -C simple_d -f makefile.pc clobber
+	$(MAKE) -C simple_dd -f makefile.pc clobber
+	$(MAKE) -C simple_rom -f makefile.pc clobber
+

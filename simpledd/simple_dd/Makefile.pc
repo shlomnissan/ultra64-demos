@@ -1,0 +1,28 @@
+LCDEFS += -DDD64 -DNDEBUG 
+LCOPTS += -g -O2
+ULTRALIB = gultra_d
+LDIRT += $(APP)
+EXTRACODEFILES = dd.c
+LDFLAGS += -lleo_d -l$(ULTRALIB)
+MAKEDISKDEFS = -DDD64 -t 0
+
+OBJECTS += $(EXTRADATAFILES:.c=.o) $(EXTRACODEFILES:.c=.o)
+CODEOBJECTS += $(EXTRACODEFILES:.c=.o)
+
+TARGETS = simple.n64
+
+.PHONY: clobber
+
+%.o : %.c
+	$(CC) $(LCOPTS) -c $(LCINCS) $(LCDEFS) $<
+
+all: $(TARGETS)
+
+$(CODESEGMENT):	$(CODEOBJECTS)
+		$(LD) -o $@ -r $^ $(LDFLAGS) 
+
+$(TARGETS):	spec $(OBJECTS)
+		$(MAKEDISK) $(MAKEDISKDEFS) $(MAKEROMDEFS) ../spec -r $(TARGETS)
+
+clobber:
+	rm -rf *.o $(TARGETS) simple.out gwrite

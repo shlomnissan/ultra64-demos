@@ -1,0 +1,61 @@
+#!smake
+include $(ROOT)/usr/include/make/PRdefs
+
+APP =		simple.out
+
+TARGETS =	simple.n64
+
+OPTIMIZER	= -g
+
+HFILES =		\
+	simple.h	\
+	audio.h		\
+	gfx.h		\
+	misc.h		\
+	gfx_tri.h	\
+	gfx_vtx.h
+
+CODEFILES =		\
+	audio.c		\
+	audiomgr.c	\
+	controller.c	\
+	gfx.c		\
+	gfxstack.c	\
+	gfxyield.c	\
+	misc.c		\
+	simple.c
+
+CODEOBJECTS =	$(CODEFILES:.c=.o)
+
+CODESEGMENT =	codesegment.o
+
+# Data files that have thier own segments:
+
+DATAFILES =		\
+	gfxdynamic.c	\
+	gfxdlists.c	\
+	gfxzbuffer.c	\
+	gfxinit.c	\
+	gfxstatic.c	\
+	gfxcfb.c
+
+DATAOBJECTS =	$(DATAFILES:.c=.o)
+
+OBJECTS =	$(CODESEGMENT) $(DATAOBJECTS)
+
+LCINCS =	-I.. -I$(ROOT)/usr/include/PR 
+LCOPTS =	$(DFLAG) -G 0
+LCDEFS =
+LDFLAGS =	$(MKDEPOPT) -L$(ROOT)/usr/lib -lgultra_d -L$(GCCDIR)/mipse/lib -lkmc 
+
+LDIRT  =	$(APP)
+
+default:	$(TARGETS)
+
+include $(COMMONRULES)
+
+$(CODESEGMENT):	$(CODEOBJECTS)
+		$(LD) -o $(CODESEGMENT) -r $(CODEOBJECTS) $(LDFLAGS)
+
+$(TARGETS) $(APP):	spec $(OBJECTS)
+		$(MAKEROM) spec -r $(TARGETS) -e $(APP)

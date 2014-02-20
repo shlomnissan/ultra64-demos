@@ -1,0 +1,73 @@
+	org     $b0000000
+
+;************************************************************
+header  group
+	section.16      code.header,header
+
+;************************************************************
+code                    group obj($80000400)
+codebss                 group obj(),bss
+
+_codeSegmentRomStart    alias _code_org
+_codeSegmentRomEnd      alias _code_orgend
+_codeSegmentStart       alias _code_obj
+_codeSegmentEnd         alias _codebss_objend
+
+	section.16      code.start,code
+	section.16      code.rdata,code
+	section.16      code.rodata,code
+        section.4       code.ctors,code
+        section.4       code.dtors,code
+	section.16      code.text,code
+	section.16      code.data,code
+	section.16      code.sdata,code
+	section.16      code.sbss,codebss
+	section.16      code.bss,codebss
+
+	include "c:/sn_win/lib/snmain.obj",code
+	include "c:/sn_win/lib/psyq.obj",code
+	include "c:/sn_win/lib/psyqdbg.obj",code
+
+	include "playseq.obj",code
+	include "c:/ultra/usr/lib/pr/rspboot.obj",code
+	include "c:/ultra/usr/lib/pr/aspmain.obj",code
+
+	inclib  "libsn.lib",code
+        inclib  "libgultra.lib",code
+
+;************************************************************
+_midibank                   group   obj()
+_midibankbss                group   obj(),bss
+_midibankSegmentRomStart    alias   __midibank_org
+_midibankSegmentRomEnd      alias   __midibank_orgend
+_midibankSegmentStart       alias   __midibank_obj
+_midibankSegmentEnd         alias   __midibankbss_objend
+	
+	section.16      _midibank.data,_midibank
+
+midibankdata       incbin "c:/ultra/usr\lib/pr\soundbanks\genmidibank.ctl",_midibank.data,16
+
+;************************************************************
+_miditable                  group   obj()
+_miditablebss               group obj(),bss
+_miditableSegmentRomStart   alias   __miditable_org
+_miditableSegmentRomEnd     alias   __miditable_orgend
+_miditableSegmentStart      alias   __miditable_obj
+_miditableSegmentEnd        alias   __miditablebss_objend
+	
+	section.16      _miditable.data,_miditable
+
+miditabledata       incbin "c:/ultra/usr\lib\pr/soundbanks/genmidibank.tbl",_miditable.data,16
+
+;************************************************************
+_seq                    group   obj()
+_seqbss                 group   obj(),bss
+_seqSegmentRomStart     alias   __seq_org
+_seqSegmentRomEnd       alias   __seq_orgend
+_seqSegmentStart        alias   __seq_obj
+_seqSegmentEnd          alias   __seqbss_objend
+	
+	section.16      _seq.data,_seq
+
+seqdata       incbin "c:/ultra/usr\lib\pr/sequences\cmpship.sbk",_seq.data,16
+
